@@ -245,7 +245,7 @@ namespace CommunityLib
             return Item;
         }
 
-        public async Task<bool> FastMove(int retries = 3)
+        public async Task<bool> FastMove(int retries = 3, float latencyFactor = 1.5f)
         {
             var item = await GetItem();
             var wrapper = await GetWrapper();
@@ -256,7 +256,7 @@ namespace CommunityLib
                 return false;
             }
 
-            var res = await Inventory.FastMove(wrapper, item.LocalId, retries);
+            var res = await Inventory.FastMove(wrapper, item.LocalId, retries, null, latencyFactor);
 
             //Updating the StackCount now and removing the item if needed
             await Update();

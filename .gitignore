@@ -274,3 +274,4 @@ _ReSharper*/
 *.sln
 *.csproj
 CommunityLib/CommunityLib.csproj
+*.zip

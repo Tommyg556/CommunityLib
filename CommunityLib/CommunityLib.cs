@@ -148,6 +148,13 @@ namespace CommunityLib
             if (name == "communitylib_get_current_area_state_cache")
                 return AreaStateCache.Current;
 
+            if (name == "ModifyReactionWaitTimings")
+            {
+                Coroutines.ReactionMinSleepDelay = param[0];
+                Coroutines.ReactionMaxSleepDelay = param[1];
+                Log.Debug($"[{Name}] Min/Max Reaction delays are now {param[0]} & {param[1]}");
+            }
+
             return null;
         }
 

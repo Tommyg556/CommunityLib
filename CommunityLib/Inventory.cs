@@ -108,7 +108,6 @@ namespace CommunityLib
         }
 
 
-
         /// <summary>
         /// Generic FastMove using new Inv Wrapper
         /// The inventory you refer is theinventory that will be used for moving the item from
@@ -116,9 +115,10 @@ namespace CommunityLib
         /// <param name="inv">This is the location where the item is picked up (can be stash or whatever you want)</param>
         /// <param name="id">This is the item localid</param>
         /// <param name="retries">Number of max fastmove attempts</param>
+        /// <param name="latencyFactor">Latency Factor for waitings</param>
         /// <param name="breakFunc">If specified condition return true, FastMove will canceled and false will be returned</param>
         /// <returns>FastMoveResult enum entry</returns>
-        public static async Task<bool> FastMove(InventoryControlWrapper inv, int id, int retries = 3, Func<bool> breakFunc = null )
+        public static async Task<bool> FastMove(InventoryControlWrapper inv, int id, int retries = 3, Func<bool> breakFunc = null, float latencyFactor = 1.5f)
         {
             // If the inventory is null for reasons, throw ana application-level error
             if (inv == null)
@@ -137,7 +137,7 @@ namespace CommunityLib
                 return false;
             }
 
-            await Coroutines.LatencyWait();
+            await Coroutines.LatencyWait(latencyFactor);
             await Coroutines.ReactionWait();
 
             // The idea is to have a maximum of tries, but we don't want to spam them.
@@ -169,7 +169,7 @@ namespace CommunityLib
                     if (error == FastMoveResult.Unsupported)
                         inv.FastMove();
 
-                    await Coroutines.LatencyWait();
+                    await Coroutines.LatencyWait(latencyFactor);
                     await Coroutines.ReactionWait();
                     nextFastMove = LokiPoe.Random.Next(2500, 4000);
                     nextfastmovetimer.Restart();
